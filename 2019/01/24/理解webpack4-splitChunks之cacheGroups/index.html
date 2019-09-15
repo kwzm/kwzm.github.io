@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>理解webpack4.splitChunks之cacheGroups | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="cacheGroups 其实是 splitChunks 里面最核心的配置，一开始我还认为 cacheGroups 是可有可无的，这是完全错误的，splitChunks 就是根据 cacheGroups 去拆分模块的，包括之前说的 chunks 属性和之后要介绍的种种属性其实都是对缓存组进行配置的。splitChunks 默认有两个缓存组：vender 和 default，可以再来回顾一下 spli">
+<meta name="keywords" content="webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解webpack4.splitChunks之cacheGroups">
+<meta property="og:url" content="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks之cacheGroups/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="cacheGroups 其实是 splitChunks 里面最核心的配置，一开始我还认为 cacheGroups 是可有可无的，这是完全错误的，splitChunks 就是根据 cacheGroups 去拆分模块的，包括之前说的 chunks 属性和之后要介绍的种种属性其实都是对缓存组进行配置的。splitChunks 默认有两个缓存组：vender 和 default，可以再来回顾一下 spli">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/1.png">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/2.png">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/3.png">
+<meta property="og:updated_time" content="2019-09-15T10:26:51.618Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解webpack4.splitChunks之cacheGroups">
+<meta name="twitter:description" content="cacheGroups 其实是 splitChunks 里面最核心的配置，一开始我还认为 cacheGroups 是可有可无的，这是完全错误的，splitChunks 就是根据 cacheGroups 去拆分模块的，包括之前说的 chunks 属性和之后要介绍的种种属性其实都是对缓存组进行配置的。splitChunks 默认有两个缓存组：vender 和 default，可以再来回顾一下 spli">
+<meta name="twitter:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.kwzm.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-理解webpack4-splitChunks之cacheGroups" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/24/理解webpack4-splitChunks之cacheGroups/" class="article-date">
+  <time datetime="2019-01-24T08:12:31.000Z" itemprop="datePublished">2019-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解webpack4.splitChunks之cacheGroups
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>cacheGroups 其实是 splitChunks 里面最核心的配置，一开始我还认为 cacheGroups 是可有可无的，这是完全错误的，splitChunks 就是根据 cacheGroups 去拆分模块的，包括之前说的 chunks 属性和之后要介绍的种种属性其实都是对缓存组进行配置的。splitChunks 默认有两个缓存组：vender 和 default，可以再来回顾一下 splitChunks 的默认配置：</p>
+<a id="more"></a>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  optimization: &#123;</span><br><span class="line">    splitChunks: &#123;</span><br><span class="line">      chunks: <span class="string">"async"</span>,</span><br><span class="line">      minSize: <span class="number">30000</span>,</span><br><span class="line">      minChunks: <span class="number">1</span>,</span><br><span class="line">      maxAsyncRequests: <span class="number">5</span>,</span><br><span class="line">      maxInitialRequests: <span class="number">3</span>,</span><br><span class="line">      automaticNameDelimiter: <span class="string">"~"</span>,</span><br><span class="line">      name: <span class="literal">true</span>,</span><br><span class="line">      cacheGroups: &#123;</span><br><span class="line">        vendors: &#123;</span><br><span class="line">          test: <span class="regexp">/[\\/]node_modules[\\/]/</span>,</span><br><span class="line">          priority: <span class="number">-10</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="keyword">default</span>: &#123;</span><br><span class="line">          minChunks: <span class="number">2</span>,</span><br><span class="line">          priority: <span class="number">-20</span>,</span><br><span class="line">          reuseExistingChunk: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>想想第一篇文章里为什么默认的打包能够将第三方库拆分出来，就是因为 cacheGroups 里面定义了 vendors 这个缓存组，它的 test 设置为 <code>/[\\/]node_modules[\\/]/</code> 表示只筛选从 node_modules 文件夹下引入的模块，所以所有第三方模块才会被拆分出来。除此之外还有一个 default 缓存组，它会将至少有两个 chunk 引入的模块进行拆分，它的权重小于 vendors，下面我们通过 demo 来测试一下。</p>
+<p>我修改 webpack 的 entry，新加入一个 entry2.js，代码如下：</p>
+<p>webpack 配置：</p>
+<img src="/images/splitChunks-cacheGroups/1.png">
+
+<p>entry1.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry1&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;App /&gt;, document.getElementById("root"));</span><br></pre></td></tr></table></figure>
+
+<p>entry2.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry2&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;App /&gt;, document.getElementById("root"));</span><br></pre></td></tr></table></figure>
+
+<p>打包之后的结果如下：</p>
+<img src="/images/splitChunks-cacheGroups/2.png" width="300" height="200">
+<img src="/images/splitChunks-cacheGroups/3.png" width="300" height="200">
+
+<p>entry1.js 和 entry2.js 都引入了 jquery.js，所以 jquery.js 的引用次数为 2，minChunks 的默认值为 2，所以正好满足要求于是第二个包被拆分出来了。</p>
+<p>你当然也可以自己定义缓存组来根据你的项目实际情况进行耕细粒度的拆分。</p>
+<p>另外还需要说明一下，cacheGroups 之外设置的约束条件比如说默认配置里面的 chunks、minSize、minChunks 等等都会作用于 cacheGroups，除了 test, priority and reuseExistingChunk，这三个是只能定义在 cacheGroup 这一层的，这也就解释了第一篇文章里面为什么 entry 里面引入的第三方库 react-dom 只被 entry1.js 引入了一次就会被打包出来，因为默认的 minChunks=1，这个属性会作用于所有的 cacheGroups，但是 cacheGroups 也可以将上面的所有属性都重新定义，就会覆盖外面的默认属性，比如 default 这个缓存组就设置了 minChunks=2，他会覆盖掉默认值 1。</p>
+<p>注意：这块再提一个思考，为什么 entry1.js 和 entry2.js 里面都引入了 react-dom 这个第三方库，它完全满足 default 这个 cacheGroup 的条件但是为什么没有被包含在 default<del>entry1</del>entry2 这个 chunk 中而是被纳入了 vendor<del>entry1</del>entry2 这个 chunk 里面了呢？</p>
+<p>其实这是因为 priority 这个属性起了作用，它的含义是权重，如果有一个模块满足了多个缓存组的条件就会去按照权重划分，谁的权重高就优先按照谁的规则处理，default 的 priority 是-20 明显小于 vendors 的-10，所以会优先按照 vendors 这个缓存组拆分。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks之cacheGroups/" data-id="ck0kuuryq000f3ovxz4oy9fkt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/24/理解webpack4-splitChunks之maxInitialRequests/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          理解webpack4.splitChunks之maxInitialRequests
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/24/理解webpack4-splitChunks之chunks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">理解webpack4.splitChunks之chunks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/mobx/" style="font-size: 10px;">mobx</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

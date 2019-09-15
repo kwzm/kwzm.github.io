@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>理解webpack4.splitChunks之maxAsyncRequests | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="maxAsyncRequests 和 maxInitialRequests 有相似之处，它俩都是用来限制拆分数量的，maxInitialRequests 是用来限制入口的拆分数量而 maxAsyncRequests 是用来限制异步模块内部的并行最大请求数的，说白了你可以理解为是每个 import()它里面的最大并行请求数量。">
+<meta name="keywords" content="webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解webpack4.splitChunks之maxAsyncRequests">
+<meta property="og:url" content="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks之maxAsyncRequests/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="maxAsyncRequests 和 maxInitialRequests 有相似之处，它俩都是用来限制拆分数量的，maxInitialRequests 是用来限制入口的拆分数量而 maxAsyncRequests 是用来限制异步模块内部的并行最大请求数的，说白了你可以理解为是每个 import()它里面的最大并行请求数量。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-maxAsyncRequests/1.png">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-maxAsyncRequests/2.png">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-maxAsyncRequests/3.png">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-maxAsyncRequests/4.png">
+<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-maxAsyncRequests/5.png">
+<meta property="og:updated_time" content="2019-09-15T10:26:58.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解webpack4.splitChunks之maxAsyncRequests">
+<meta name="twitter:description" content="maxAsyncRequests 和 maxInitialRequests 有相似之处，它俩都是用来限制拆分数量的，maxInitialRequests 是用来限制入口的拆分数量而 maxAsyncRequests 是用来限制异步模块内部的并行最大请求数的，说白了你可以理解为是每个 import()它里面的最大并行请求数量。">
+<meta name="twitter:image" content="http://blog.kwzm.net/images/splitChunks-maxAsyncRequests/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.kwzm.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-理解webpack4-splitChunks之maxAsyncRequests" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/24/理解webpack4-splitChunks之maxAsyncRequests/" class="article-date">
+  <time datetime="2019-01-24T11:50:21.000Z" itemprop="datePublished">2019-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解webpack4.splitChunks之maxAsyncRequests
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>maxAsyncRequests 和 maxInitialRequests 有相似之处，它俩都是用来限制拆分数量的，maxInitialRequests 是用来限制入口的拆分数量而 maxAsyncRequests 是用来限制异步模块内部的并行最大请求数的，说白了你可以理解为是每个 import()它里面的最大并行请求数量。</p>
+<a id="more"></a>
+
+<p>这其中要注意以下几点：</p>
+<ol>
+<li><p>import()文件本身算一个请求</p>
+</li>
+<li><p>并不算 js 以外的公共资源请求比如 css</p>
+</li>
+<li><p>如果同时有两个模块满足 cacheGroup 的规则要进行拆分，但是 maxInitialRequests 的值只能允许再拆分一个模块，那尺寸更大的模块会被拆分出来</p>
+</li>
+</ol>
+<p>我们还是通过一个例子来解释一下，我定义三个入口文件 entry1.js、entry2.js 和 entry3，entry1.js 里面动态加载 page1.js</p>
+<p>webpack 的配置如下：</p>
+<p>因为默认的 maxAsyncRequests 为 5 太大了，不方便测试，所以改为了 3</p>
+<img src="/images/splitChunks-maxAsyncRequests/1.png">
+<p>entry1.js：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> Page1 = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">import</span>(<span class="comment">/* webpackChunkName: "page1" */</span> <span class="string">"./routes/page1"</span>).then(<span class="function"><span class="params">comp</span> =&gt;</span> &#123;</span><br><span class="line">    Page1 = comp;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;App&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;Page1 /</span>&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">ReactDOM.render(&lt;App /</span>&gt;, <span class="built_in">document</span>.getElementById(<span class="string">"root"</span>));</span><br></pre></td></tr></table></figure>
+
+<p>entry2.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log($);</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry2&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;App /&gt;, document.getElementById("root"));</span><br></pre></td></tr></table></figure>
+
+<p>entry3.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> OrgChart <span class="keyword">from</span> <span class="string">"./assets/orgchart"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;App&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;App /&gt;, document.getElementById("root"));</span><br></pre></td></tr></table></figure>
+
+<p>page1.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">"lodash"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"../assets/jquery"</span>;</span><br><span class="line"><span class="keyword">import</span> OrgChart <span class="keyword">from</span> <span class="string">"../assets/orgchart"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Page1 = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;Page1&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> Page1;</span><br></pre></td></tr></table></figure>
+
+<p>打包结果：</p>
+<img src="/images/splitChunks-maxAsyncRequests/2.png">
+<p>让我们分享一下打包结果，主要是看和 page1 有关的，因为 page1 是通过 import()动态引入的</p>
+<ol>
+<li><p>vendors~page1.chunkhash.chunk.js 是 page1 里面引入的第三方库 lodash，这个是根据 cacheGroups 进行拆分的，如果不明白可以去看我之前的文章《理解 webpack4.splitChunks 之 cacheGroups》</p>
+</li>
+<li><p>page1.chunkhash.chunk.js 是 page1.js 文件本身，这个也没问题，如果不明白为啥 import()的文件会被拆分可以去看我的第一篇文章《理解 webpack.splitChunks》</p>
+</li>
+<li><p>default~entry2~page1.chunkhash.js 这个拆分的 entry2 和 page1 的共用文件 jquery.js，这个是根据 cacheGroups 进行拆分的，如果不明白可以去看我之前的文章《理解 webpack4.splitChunks 之 cacheGroups》</p>
+</li>
+</ol>
+<p>那么 page1 这个异步模块的并发请求数正好是设置的最大值 3，符合 maxAsyncRequests</p>
+<p>这里我们发现除了 jquery.js 之外 page1.js 和 entry3.js 还共同引入了 orgchart.js 文件，但是却没有被拆分出来，这就是因为 maxAsyncRequests 的限制，如果我们把值改为 4 呢？</p>
+<p>改为 4 后进行打包，打包的结果如下：</p>
+<img src="/images/splitChunks-maxAsyncRequests/3.png">
+<img src="/images/splitChunks-maxAsyncRequests/4.png">
+<p>我们发现 orgchart.js 被打包出来了，这个时候 page1.js 的最大请求数量也变成了 4 个。</p>
+<p>注意： 这里有一个小问题，为啥是 jquery.js 被拆分了而不是 orgchart.js？</p>
+<p>仔细看文章的小伙伴应该会发现我在文章开头提到的需要注意的几个点中最后一点，在匹配 maxAsyncRequests 这个条件进行拆分的时候尺寸大的包会先被拆分</p>
+<img src="/images/splitChunks-maxAsyncRequests/5.png">
+<p>由上图我们知道 jquery.js 的尺寸远远大于 orgchart.js 的尺寸，所以它被先拆分了。</p>
+<p>PS：至于 vendors~page1.chunkhash.chunk.js 为啥没有把 react 拆出来可以去看我的最后一篇博客《理解 webpack 之其余要点》</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks之maxAsyncRequests/" data-id="ck0kuuryx000k3ovxfam6o8r8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/29/理解webpack4-splitChunks之其余要点/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          理解webpack4.splitChunks之其余要点
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/24/理解webpack4-splitChunks之maxInitialRequests/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">理解webpack4.splitChunks之maxInitialRequests</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/mobx/" style="font-size: 10px;">mobx</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

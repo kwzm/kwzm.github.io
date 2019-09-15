@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>React SPA 应用 hash 路由如何使用锚点 | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当我们在做 SPA 应用的时候，为了兼容老的浏览器（如 IE9）我们不得不放弃 HTML5 browser history api 而只能采用 hash 路由的这种形式来实现前端路由，但是因为 hash 被路由占据了，导致本来不是问题的锚点功能却成了一个不大不小的问题。">
+<meta name="keywords" content="hash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React SPA 应用 hash 路由如何使用锚点">
+<meta property="og:url" content="http://blog.kwzm.net/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="当我们在做 SPA 应用的时候，为了兼容老的浏览器（如 IE9）我们不得不放弃 HTML5 browser history api 而只能采用 hash 路由的这种形式来实现前端路由，但是因为 hash 被路由占据了，导致本来不是问题的锚点功能却成了一个不大不小的问题。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/7/16c6c4e9fe48ab52?w=1008&h=581&f=png&s=10173">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/7/16c6c4f25ceb07bb?w=1042&h=570&f=png&s=11575">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/8/7/16c6c52765e274ca?w=1130&h=602&f=png&s=15439">
+<meta property="og:updated_time" content="2019-09-15T10:27:21.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React SPA 应用 hash 路由如何使用锚点">
+<meta name="twitter:description" content="当我们在做 SPA 应用的时候，为了兼容老的浏览器（如 IE9）我们不得不放弃 HTML5 browser history api 而只能采用 hash 路由的这种形式来实现前端路由，但是因为 hash 被路由占据了，导致本来不是问题的锚点功能却成了一个不大不小的问题。">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/8/7/16c6c4e9fe48ab52?w=1008&h=581&f=png&s=10173">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.kwzm.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-React-SPA-应用-hash-路由如何使用锚点" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/" class="article-date">
+  <time datetime="2019-08-13T13:58:56.000Z" itemprop="datePublished">2019-08-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React SPA 应用 hash 路由如何使用锚点
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当我们在做 SPA 应用的时候，为了兼容老的浏览器（如 IE9）我们不得不放弃 HTML5 browser history api 而只能采用 hash 路由的这种形式来实现前端路由，但是因为 hash 被路由占据了，导致本来不是问题的锚点功能却成了一个不大不小的问题。</p>
+<a id="more"></a>
+
+<p>经过我自己的搜索目前有两种方式能够解决这个问题，为了能在 react 生态下面简单优雅的使用，我专门封装了一个锚点组件 <a href="https://github.com/kwzm/react-anchor-without-hash" target="_blank" rel="noopener">react-anchor-without-hash</a>，它使用了类似原生 a 标签的写法，并且可以支持滚动的距离和指定滚动的元素，尽可能的满足业务的需求。</p>
+<p>不过在介绍这个组件之前，还是得先说一下两种基本的解决方案。</p>
+<h2 id="两种解决方案"><a href="#两种解决方案" class="headerlink" title="两种解决方案"></a>两种解决方案</h2><h3 id="scrollIntoView"><a href="#scrollIntoView" class="headerlink" title="scrollIntoView"></a><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView" target="_blank" rel="noopener">scrollIntoView</a></h3><p>scrollIntoView 方法可以让当前的元素滚动到浏览器窗口的可视区域内。<br>它的使用方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> element = <span class="built_in">document</span>.getElementById(<span class="string">"box"</span>);</span><br><span class="line"></span><br><span class="line">element.scrollIntoView();</span><br></pre></td></tr></table></figure>
+
+<p>这个 api 兼容 IE8 及以上的浏览器，所以可以放心使用。</p>
+<blockquote>
+<p>注：IE10 之前的 IE 浏览器部分支持，具体请查看<a href="https://caniuse.com/#search=scrollIntoView" target="_blank" rel="noopener">Can I Use</a>。</p>
+</blockquote>
+<h3 id="scrollTop"><a href="#scrollTop" class="headerlink" title="scrollTop"></a><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop" target="_blank" rel="noopener">scrollTop</a></h3><p>另一个方法是使用 scrollTop 这个 api，这个方法的兼容性也是比较好的，这个方法相比于 <code>scrollIntoView</code> 来说需要你自己定义要滚动的元素和要滚动的高度，虽然看起来麻烦一些，但是好处是自由度比较高，试想一下下面的场景：</p>
+<ul>
+<li>你有一个 A 元素在 Content 里面，Content 设置了滚动，你想让 A 元素滚动到可视区域内。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/7/16c6c4e9fe48ab52?w=1008&h=581&f=png&s=10173" alt></p>
+<ul>
+<li>如果用 <code>scrollIntoView</code> 会变成下面这样，A 元素显示到整个浏览器视口的最上面，这样就会和 Header 重合，被遮挡住一部分。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/7/16c6c4f25ceb07bb?w=1042&h=570&f=png&s=11575" alt></p>
+<ul>
+<li>所以这时候需要使用 <code>scrollTop</code> 去设置 content 滚动距离，比如说是 60px，最后的效果就变成了我们想要的结果。</li>
+</ul>
+<p><img src="https://user-gold-cdn.xitu.io/2019/8/7/16c6c52765e274ca?w=1130&h=602&f=png&s=15439" alt></p>
+<p>使用方式如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cont = <span class="built_in">document</span>.querySelector(<span class="string">"#container"</span>);</span><br><span class="line"><span class="keyword">const</span> a = <span class="built_in">document</span>.querySelector(<span class="string">"#a"</span>);</span><br><span class="line"></span><br><span class="line">cont.scrollTop = a.offsetTop + <span class="number">60</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="react-anchor-without-hash"><a href="#react-anchor-without-hash" class="headerlink" title="react-anchor-without-hash"></a><a href="https://github.com/kwzm/react-anchor-without-hash" target="_blank" rel="noopener">react-anchor-without-hash</a></h2><p>以上两种方式如果想方便的在项目里面使用多少都需要封装一下，而且使用起来和原生的 a 标签形式也相差甚远。</p>
+<p>但是如果是在 react 技术栈下，我们可以利用组件来封装一个类似 a 标签的锚点，这样在使用形式上，我们就能更接近于原生的方式，降低使用成本。</p>
+<p>于是我写了这个 react 组件，兼容以上两种方案，让你能够非常简单的实现锚点，如果使用了该组件的话，上面的实现方式就会变成下面这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Anchor <span class="keyword">from</span> <span class="string">'react-anchor-without-hash'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> anchorProps = &#123;</span><br><span class="line">  type: <span class="string">'scrollTop'</span>,</span><br><span class="line">  container: <span class="string">'#container'</span>,</span><br><span class="line">  interval: <span class="number">60</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div id=<span class="string">"container"</span> style=&#123;&#123;<span class="attr">position</span>: <span class="string">'relative'</span>, <span class="attr">overflow</span>: <span class="string">'scroll'</span>&#125;&#125;&gt;</span><br><span class="line">  &lt;Anchor name=<span class="string">"a"</span> &#123;...anchorProps&#125;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;This is a&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">      &lt;div&gt;There are some text...&lt;/</span>div&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>Anchor&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候你只需要在页面的地址栏输入: <code>http://somehost/path/#hash?_to=a</code> 页面就会让 A 滚动到你想要的位置啦！</p>
+<p>github：<a href="https://github.com/kwzm/react-anchor-without-hash" target="_blank" rel="noopener">https://github.com/kwzm/react-anchor-without-hash</a></p>
+<p>demo：<a href="https://kwzm.github.io/react-anchor-without-hash/" target="_blank" rel="noopener">https://kwzm.github.io/react-anchor-without-hash/</a></p>
+<p>codesandbox: <a href="https://codesandbox.io/embed/react-anchor-without-hash-2xq2h" target="_blank" rel="noopener">https://codesandbox.io/embed/react-anchor-without-hash-2xq2h</a></p>
+<p>欢迎讨论和 Star！！！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.kwzm.net/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/" data-id="ck0kuurxo00003ovxl5sre1gp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hash/">hash</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          记录前端单元测试和e2e测试踩过的坑【持续更新】
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/04/dva系列源码解读/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">dva系列源码解读</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/mobx/" style="font-size: 10px;">mobx</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

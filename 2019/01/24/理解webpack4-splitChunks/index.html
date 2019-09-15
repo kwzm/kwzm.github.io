@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>理解webpack4.splitChunks | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言之前一直也没有研究过 webpack4 是基于怎样的规则去拆分模块的，现在正好有时间打算好好了解一下，看了官方文档也陆陆续续的看了看网上别人写的文章，感觉大部分都是将官方文档翻译了一遍，很多问题都没有解释清楚，无奈只好自己写 demo 去通过实际编译结果来理解，经过一天多的不断调试和百度，基本弄清楚了 splitChuns 的运行规则了，特此记录下来。">
+<meta name="keywords" content="webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解webpack4.splitChunks">
+<meta property="og:url" content="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="前言之前一直也没有研究过 webpack4 是基于怎样的规则去拆分模块的，现在正好有时间打算好好了解一下，看了官方文档也陆陆续续的看了看网上别人写的文章，感觉大部分都是将官方文档翻译了一遍，很多问题都没有解释清楚，无奈只好自己写 demo 去通过实际编译结果来理解，经过一天多的不断调试和百度，基本弄清楚了 splitChuns 的运行规则了，特此记录下来。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-15T10:26:45.170Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解webpack4.splitChunks">
+<meta name="twitter:description" content="前言之前一直也没有研究过 webpack4 是基于怎样的规则去拆分模块的，现在正好有时间打算好好了解一下，看了官方文档也陆陆续续的看了看网上别人写的文章，感觉大部分都是将官方文档翻译了一遍，很多问题都没有解释清楚，无奈只好自己写 demo 去通过实际编译结果来理解，经过一天多的不断调试和百度，基本弄清楚了 splitChuns 的运行规则了，特此记录下来。">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.kwzm.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-理解webpack4-splitChunks" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/24/理解webpack4-splitChunks/" class="article-date">
+  <time datetime="2019-01-24T07:09:16.000Z" itemprop="datePublished">2019-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解webpack4.splitChunks
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前一直也没有研究过 webpack4 是基于怎样的规则去拆分模块的，现在正好有时间打算好好了解一下，看了官方文档也陆陆续续的看了看网上别人写的文章，感觉大部分都是将官方文档翻译了一遍，很多问题都没有解释清楚，无奈只好自己写 demo 去通过实际编译结果来理解，经过一天多的不断调试和百度，基本弄清楚了 splitChuns 的运行规则了，特此记录下来。</p>
+<a id="more"></a>
+
+<h2 id="webpack-中的三个概念-module、chunk-和-bundle"><a href="#webpack-中的三个概念-module、chunk-和-bundle" class="headerlink" title="webpack 中的三个概念 module、chunk 和 bundle"></a>webpack 中的三个概念 module、chunk 和 bundle</h2><p>在研究 splitChunks 之前，我们必须先弄明白这三个名词是什么意思，主要是 chunk 的含义，要不然你就不知道 splitChunks 是在什么的基础上进行拆分。</p>
+<p>从官网上貌似没找太多的解释，去网上搜了搜基本上都在转述这位老哥的回答<a href="https://stackoverflow.com/questions/42523436/what-are-module-chunk-and-bundle-in-webpack" target="_blank" rel="noopener">what are module,chunk and bundle in webpack</a>，我根据自己的理解给出我个人的看法：</p>
+<p>module：就是 js 的模块化 webpack 支持 commonJS、ES6 等模块化规范，简单来说就是你通过 import 语句引入的代码。<br>chunk: chunk 是 webpack 根据功能拆分出来的，包含三种情况：<br>　　　　 1. 你的项目入口（entry）</p>
+<ol start="2">
+<li><p>通过 import()动态引入的代码</p>
+</li>
+<li><p>通过 splitChunks 拆分出来的代码</p>
+</li>
+</ol>
+<p>chunk 包含着 module，可能是一对多也可能是一对一。</p>
+<p>bundle：bundle 是 webpack 打包之后的各个文件，一般就是和 chunk 是一对一的关系，bundle 就是对 chunk 进行编译压缩打包等处理之后的产出。</p>
+<h2 id="splitChunks"><a href="#splitChunks" class="headerlink" title="splitChunks"></a>splitChunks</h2><p>下面进入正题讲解 splitChunks，splitChunks 就算你什么配置都不做它也是生效的，源于 webpack 有一个默认配置，这也符合 webpack4 的开箱即用的特性，它的默认配置如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  optimization: &#123;</span><br><span class="line">    splitChunks: &#123;</span><br><span class="line">      chunks: <span class="string">"async"</span>,</span><br><span class="line">      minSize: <span class="number">30000</span>,</span><br><span class="line">      minChunks: <span class="number">1</span>,</span><br><span class="line">      maxAsyncRequests: <span class="number">5</span>,</span><br><span class="line">      maxInitialRequests: <span class="number">3</span>,</span><br><span class="line">      automaticNameDelimiter: <span class="string">"~"</span>,</span><br><span class="line">      name: <span class="literal">true</span>,</span><br><span class="line">      cacheGroups: &#123;</span><br><span class="line">        vendors: &#123;</span><br><span class="line">          test: <span class="regexp">/[\\/]node_modules[\\/]/</span>,</span><br><span class="line">          priority: <span class="number">-10</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="keyword">default</span>: &#123;</span><br><span class="line">          minChunks: <span class="number">2</span>,</span><br><span class="line">          priority: <span class="number">-20</span>,</span><br><span class="line">          reuseExistingChunk: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>我们现在用一个简单的 react 项目来测试下打包之后的效果如何，我的这个项目有两个页面 entry1.js 和 page1.js，entry1.js 是入口文件，entry1.js 里面动态引入了 page1.js。</p>
+<p>entry1.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"> <span class="number">2</span> <span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"> <span class="number">4</span></span><br><span class="line"> <span class="number">5</span> <span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line"> <span class="number">6</span>   <span class="keyword">let</span> Page1 = <span class="literal">null</span></span><br><span class="line"> <span class="number">7</span></span><br><span class="line"> <span class="number">8</span>   <span class="keyword">import</span>(<span class="comment">/* webpackChunkName: "page1" */</span><span class="string">'./routes/page1'</span>).then(<span class="function"><span class="params">comp</span> =&gt;</span> &#123;</span><br><span class="line"> <span class="number">9</span>     Page1 = comp</span><br><span class="line"><span class="number">10</span>   &#125;)</span><br><span class="line"><span class="number">11</span>   <span class="built_in">console</span>.log($)</span><br><span class="line"><span class="number">12</span>   <span class="keyword">return</span> (</span><br><span class="line"><span class="number">13</span>     &lt;div&gt;</span><br><span class="line"><span class="number">14</span>       &lt;div&gt;App&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">15       &lt;Page1 /</span>&gt;</span><br><span class="line"><span class="number">16</span>     &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">17   )</span></span><br><span class="line"><span class="regexp">18 &#125;</span></span><br><span class="line"><span class="regexp">19</span></span><br><span class="line"><span class="regexp">20 ReactDOM.render(&lt;App /</span>&gt;, <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>page1.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> <span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"> <span class="number">2</span> <span class="keyword">import</span> _ <span class="keyword">from</span> <span class="string">'lodash'</span></span><br><span class="line"> <span class="number">4</span></span><br><span class="line"> <span class="number">5</span> <span class="keyword">const</span> Page1 = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line"> <span class="number">6</span>   <span class="built_in">console</span>.log($)</span><br><span class="line"> <span class="number">7</span></span><br><span class="line"> <span class="number">8</span>   <span class="keyword">return</span> (</span><br><span class="line"> <span class="number">9</span>     &lt;div&gt;</span><br><span class="line"><span class="number">10</span>       &lt;div&gt;Page1&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">11     &lt;/</span>div&gt;</span><br><span class="line"><span class="number">12</span>   )</span><br><span class="line"><span class="number">13</span> &#125;</span><br><span class="line"><span class="number">14</span></span><br><span class="line"><span class="number">15</span> <span class="keyword">export</span> <span class="keyword">default</span> Page1</span><br></pre></td></tr></table></figure>
+
+<p>让我们想一想打包之后的代码是怎样的呢？</p>
+<p>以上就是打包之后的代码，是否如你所想呢，让我们分析一下：</p>
+<ol>
+<li><p>第一个 main 文件就是打包之后的入口文件，这个我们上面说了 webpack 会把入口文件单独拆成一个 chunk，这个没有问题</p>
+</li>
+<li><p>第三个 page1 文件，我们上面也说过动态加载得文件 webpack 会将其拆分为一个 chunk，这个也没有问题</p>
+</li>
+<li><p>第二个 vendor~page1 文件，这个是对 page1 文件里面引入的第三方库进行打包，具体就是 lodash 那个第三方库了，这个涉及到 cacheGroup，我们在下面的系列文章里面会详细讲述</p>
+</li>
+</ol>
+<p>以上就是所有被拆分出来的包，但是我们发现有一个文件没有拆分出来，那就是 entry1 里面引入的第三方库 react-dom，这个是为什么呢，这个就要涉及到我们接下来讲到的 chunks 属性的配置。</p>
+<p>注意：这里提个小问题为什么 react-dom 这个第三方库只在 entry1.js 里面引入了一次就被拆分出来了？这个答案我将在第三篇文章《理解 webpack4.splitChunks 之 cacheGroups》里面进行解释。</p>
+<p>为了方便阅读我将整个系列分为了若干小部分，大家可以各取所需：</p>
+<p>《理解 webpack4.splitChunks 之 chunks》</p>
+<p>《理解 webpack4.splitChunks 之 cacheGroups》</p>
+<p>《理解 webpack4.splitChunks 之 maxInitialRequests》</p>
+<p>《理解 webpack4.splitChunks 之 maxAsyncRequests》</p>
+<p>《理解 webpack4.splitChunks 之其余要点》</p>
+<p>文章中所用到的源码仓库地址是 <a href="https://github.com/kwzm/webpack-splitChunks-demo" target="_blank" rel="noopener">webpack-splitChunks-demo</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks/" data-id="ck0kuurym000b3ovx098g3x8l" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/24/理解webpack4-splitChunks之chunks/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          理解webpack4.splitChunks之chunks
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/01/18/git-revert后导致合并代码丢失/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">git revert后导致合并代码丢失</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/mobx/" style="font-size: 10px;">mobx</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

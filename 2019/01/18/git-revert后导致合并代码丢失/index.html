@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>git revert后导致合并代码丢失 | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="起因我有一个开发分支 antd3.x 和一个主分支 develop，我在合并 antd3.x 到 develop 的时候发现有些修改没有合并进来。">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git revert后导致合并代码丢失">
+<meta property="og:url" content="http://blog.kwzm.net/2019/01/18/git-revert后导致合并代码丢失/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="起因我有一个开发分支 antd3.x 和一个主分支 develop，我在合并 antd3.x 到 develop 的时候发现有些修改没有合并进来。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-15T10:27:11.722Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git revert后导致合并代码丢失">
+<meta name="twitter:description" content="起因我有一个开发分支 antd3.x 和一个主分支 develop，我在合并 antd3.x 到 develop 的时候发现有些修改没有合并进来。">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.kwzm.net"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-git-revert后导致合并代码丢失" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/18/git-revert后导致合并代码丢失/" class="article-date">
+  <time datetime="2019-01-18T09:07:04.000Z" itemprop="datePublished">2019-01-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      git revert后导致合并代码丢失
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>我有一个开发分支 antd3.x 和一个主分支 develop，我在合并 antd3.x 到 develop 的时候发现有些修改没有合并进来。</p>
+<a id="more"></a>
+
+<h2 id="查找问题"><a href="#查找问题" class="headerlink" title="查找问题"></a>查找问题</h2><p>然后就去网上查，发现这篇文章<a href="https://www.jianshu.com/p/603186352605" target="_blank" rel="noopener">git 合并丢失代码问题分析与解决</a>给我了一些启发。<br>　　其中说到 git merge 的原理是三方合并，简单来说就是假设我有 a 和 b 两个分支，我要合并 b 到 a，这个时候 git 其实还会去找到 a 和 b 的最近的父节点 c，将 c 作为基础的分支，然后对 abc 进行比较，如果有一个文件 xxx.js，xxx.js 的内容 abc 三个分支上同一行都不一样那么就会报 conflict，因为 git 也不知道该保留谁的代码，就会让你自行决断；如果只有一个分支比如 b 上面的 xxx.js 的同一行代码和 c 分支上的不一样那么 git 就会自作主张的认为应该保留 b 上面的修改，看到这我就有了方向，我应该去找我此次合并的两个分支的那个最近的父节点，问题应该就出在他上面。<br>　　通过执行 git merge-base antd3.x develop 找到了他俩 base 节点 2344a88，然后查看该节点的代码发现那些没有合并进来的修改已经存在于这个 base 节点上了，怪不得进行三方合并的时候没有合并进来，因为 git 发现 develop 分支上对比 base 分支没有这些修改，于是这些修改就被删除掉了。但是到这一步我又有疑问了，我没有手动的删除过 develop 上的这些修改，为啥这些修改会没有了呢，于是我查看 log 发现我曾经通过 git revert 撤销过一个合并，而这个合并恰巧就是那个修改的内容，到这块问题基本就清楚了，下面我总结一下。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>让我们从头捋一下这个问题的前因后果：</p>
+<ul>
+<li>我有三个分支 develop、antd3.x 和 std-08，其中 antd3.x 是根据 develop 拉取的，std-08 是根据 antd3.x 拉取的</li>
+<li>此时我想要合并 antd3.x 到 develop 分支上，执行代码 git merge –no-ff antd3.x</li>
+<li>发现 antd3.x 上面的有些修改（x）没有合并到 develop 上</li>
+<li>通过 git merge-base antd3.x develop 找到了他俩 base 节点 2344a88</li>
+<li>发现 base 节点上面存在修改 x</li>
+<li>通过 git log 发现 develop 分支上曾经执行过 git revert</li>
+<li>本来当时是想把 std-08 合并到 antd3.x 上结果合并到了 develop 上，也就是此时修改 x 合并到了 develop 分支上</li>
+<li>然后执行了 git revert 撤销了此次合并，并正确合并 std-08 到 antd3.x 上，这就导致了 antd3.x 和 develop 的共同父节点变成了 std-08 的最后一次提交 2344a88</li>
+<li>所以后续再想合并 antd3.x 到 develop 上时，进行三方合并，发现 base 节点上的修改在 develop 上面被删除了，所以合并的结果就是删除这些修改，但是实际上这些修改我们是想保留的<br>解决方案</li>
+</ul>
+<h2 id="解决方案有两个："><a href="#解决方案有两个：" class="headerlink" title="解决方案有两个："></a>解决方案有两个：</h2><ol>
+<li>在 develop 上执行 git reset commitId 到合并 std-08 之前的那次提交然后 git push -f origin ，这样 develop 的 commit 历史就不包含那次合并了<br>　　 2. 在 develop 上执行 git revert HEAD~ 把之前 revert 的再 revert 掉，这个我没有试过</li>
+</ol>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>其实这个教训充分暴露了我对 git revert 和 git reset 的区别不甚了解，可以看下这篇文章《git revert 用法》，对它俩的区别解释的很清楚，其实就是 git revert 的撤销原理就是删除掉之前的提交然后执行 commit，这样所有的 commits 都会保留下来，也就埋下了隐患，在我的场景里就是在 git 合并的时候寻找的 base 节点就是 develop revert 之前的那个 commit，如果是 git reset 就不会保留这个 commit，也就不会把它作为 base 节点，合并的时候就不会有问题。我看了下网上还有另一种解释就是执行完 git revert 后，git 就认为你不在需要这些修改，以后再合并的时候如果有这样的修改要合并，git 就会忽略，我没有验证过这种说法的真实性，如果有人清楚的话，还请不吝赐教。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.kwzm.net/2019/01/18/git-revert后导致合并代码丢失/" data-id="ck0kuurya00043ovx5sw18zkc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/01/24/理解webpack4-splitChunks/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          理解webpack4.splitChunks
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/mobx/" style="font-size: 10px;">mobx</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
