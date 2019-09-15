@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>记录开发Nodejs c++ addon的一些经验（一、技术栈） | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Nodejs c++ addon 是用 c++去编写 Nodejs 的插件">
+<meta name="keywords" content="nodejs,electron">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录开发Nodejs c++ addon的一些经验（一、技术栈）">
+<meta property="og:url" content="https://kwzm.netlify.com/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="Nodejs c++ addon 是用 c++去编写 Nodejs 的插件">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-15T15:22:48.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="记录开发Nodejs c++ addon的一些经验（一、技术栈）">
+<meta name="twitter:description" content="Nodejs c++ addon 是用 c++去编写 Nodejs 的插件">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kwzm.netlify.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-记录开发Nodejs-c-addon的一些经验（一、技术栈）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/" class="article-date">
+  <time datetime="2017-09-25T08:32:31.000Z" itemprop="datePublished">2017-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/桌面端/">桌面端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      记录开发Nodejs c++ addon的一些经验（一、技术栈）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Nodejs c++ addon 是用 c++去编写 Nodejs 的插件</p>
+<a id="more"></a>
+
+<p>技术栈：</p>
+<p>1、<a href="https://github.com/nodejs/node-gyp" target="_blank" rel="noopener">node-gyp</a></p>
+<p>一个用于把 c++文件编译成 node 可执行文件的库</p>
+<p>2、<a href="https://v8.paulfryzel.com/docs/master/index.html" target="_blank" rel="noopener">v8</a></p>
+<p>google v8 引擎 用于处理 c++的数据类型和 node 的数据类型的转换</p>
+<p>3、<a href="https://github.com/nodejs/nan" target="_blank" rel="noopener">nan</a></p>
+<p>相当于对 v8 做了一层封装，去处理 v8 不同版本兼容的问题</p>
+<p>4、<a href="http://www.cplusplus.com/reference/fstream/ifstream/" target="_blank" rel="noopener">c++</a></p>
+<p>因为插件是用 c++编写，所以掌握 c++的知识</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/" data-id="ck0l51lqj0025y0vx000x7d3v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（二、数据类型的转换-尤其是Buffer-）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          记录开发Nodejs c++ addon的一些经验（二、数据类型的转换(尤其是Buffer)）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/03/微信企业号-jsSDK-wx-config报invalid-signature错误，导致api接口无法使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">微信企业号 jsSDK wx.config报invalid signature错误，导致api接口无法使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/桌面端/">桌面端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ant-design/">ant-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/immutablejs/">immutablejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片裁切/">图片裁切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信企业号/">微信企业号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ant-design/" style="font-size: 10px;">ant-design</a> <a href="/tags/css/" style="font-size: 12.5px;">css</a> <a href="/tags/electron/" style="font-size: 17.5px;">electron</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/immutablejs/" style="font-size: 15px;">immutablejs</a> <a href="/tags/mobx/" style="font-size: 17.5px;">mobx</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/redux/" style="font-size: 15px;">redux</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/图片裁切/" style="font-size: 17.5px;">图片裁切</a> <a href="/tags/微信企业号/" style="font-size: 10px;">微信企业号</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a> <a href="/tags/邮件/" style="font-size: 10px;">邮件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

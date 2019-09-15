@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="blog,web,frontend">
+<meta name="keywords" content="blog,web,frontend">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kwzm&#39;s blog">
+<meta property="og:url" content="https://kwzm.netlify.com/page/3/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="blog,web,frontend">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kwzm&#39;s blog">
+<meta name="twitter:description" content="blog,web,frontend">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kwzm.netlify.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-记录开发Nodejs-c-addon的一些经验（二、数据类型的转换-尤其是Buffer-）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（二、数据类型的转换-尤其是Buffer-）/" class="article-date">
+  <time datetime="2017-09-25T09:10:27.000Z" itemprop="datePublished">2017-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/桌面端/">桌面端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（二、数据类型的转换-尤其是Buffer-）/">记录开发Nodejs c++ addon的一些经验（二、数据类型的转换(尤其是Buffer)）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>常见的数据类型的转换基本比较容易，结合 nan 应该不是一件难事</p>
+        
+          <p class="article-more-link">
+            <a href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（二、数据类型的转换-尤其是Buffer-）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2017/09/25/记录开发Nodejs-c-addon的一些经验（二、数据类型的转换-尤其是Buffer-）/" data-id="ck0l51lqo002cy0vxm2427vap" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-记录开发Nodejs-c-addon的一些经验（一、技术栈）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/" class="article-date">
+  <time datetime="2017-09-25T08:32:31.000Z" itemprop="datePublished">2017-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/桌面端/">桌面端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/">记录开发Nodejs c++ addon的一些经验（一、技术栈）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Nodejs c++ addon 是用 c++去编写 Nodejs 的插件</p>
+        
+          <p class="article-more-link">
+            <a href="/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2017/09/25/记录开发Nodejs-c-addon的一些经验（一、技术栈）/" data-id="ck0l51lqj0025y0vx000x7d3v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/electron/">electron</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-微信企业号-jsSDK-wx-config报invalid-signature错误，导致api接口无法使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/03/微信企业号-jsSDK-wx-config报invalid-signature错误，导致api接口无法使用/" class="article-date">
+  <time datetime="2016-06-03T10:43:29.000Z" itemprop="datePublished">2016-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/03/微信企业号-jsSDK-wx-config报invalid-signature错误，导致api接口无法使用/">微信企业号 jsSDK wx.config报invalid signature错误，导致api接口无法使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做公司定制化的时候发现一个问题，使用微信的语音 API 的时候微信报错，错误信息为：the permission value is offline verifying</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/06/03/微信企业号-jsSDK-wx-config报invalid-signature错误，导致api接口无法使用/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/06/03/微信企业号-jsSDK-wx-config报invalid-signature错误，导致api接口无法使用/" data-id="ck0l51lpt0018y0vxzs3n2nfw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信企业号/">微信企业号</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-探究为何rem在chrome浏览器上计算出错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/12/探究为何rem在chrome浏览器上计算出错/" class="article-date">
+  <time datetime="2016-05-12T02:29:38.000Z" itemprop="datePublished">2016-05-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/12/探究为何rem在chrome浏览器上计算出错/">探究为何rem在chrome浏览器上计算出错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在一个项目中，测试同学提了一个 bug，说手机上有个页面的某些字体显示偏大。就像这样</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/05/12/探究为何rem在chrome浏览器上计算出错/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/05/12/探究为何rem在chrome浏览器上计算出错/" data-id="ck0l51lpv001by0vxgc4vbjt9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-HTML邮件制作规范" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/05/HTML邮件制作规范/" class="article-date">
+  <time datetime="2016-05-05T02:47:29.000Z" itemprop="datePublished">2016-05-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/05/HTML邮件制作规范/">HTML邮件制作规范</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以下内容有些是别人总结的，有些是自己在工作中总结的。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/05/05/HTML邮件制作规范/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/05/05/HTML邮件制作规范/" data-id="ck0l51loa0000y0vx06b3qfis" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-怎样用sourceTree将自己本地的项目上传到github网站上" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/25/怎样用sourceTree将自己本地的项目上传到github网站上/" class="article-date">
+  <time datetime="2016-04-25T02:53:22.000Z" itemprop="datePublished">2016-04-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/25/怎样用sourceTree将自己本地的项目上传到github网站上/">怎样用sourceTree将自己本地的项目上传到github网站上</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前言：GitHub 是基于 Git 的一个代码托管网站。开发者可以将代码在 GitHub 上开源，可以浏览其它项目的代码。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/04/25/怎样用sourceTree将自己本地的项目上传到github网站上/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/04/25/怎样用sourceTree将自己本地的项目上传到github网站上/" data-id="ck0l51lpx001fy0vxnu9y79dy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-图片裁切插件jCrop的使用心得（四）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/图片裁切插件jCrop的使用心得（四）/" class="article-date">
+  <time datetime="2016-02-03T08:37:34.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/03/图片裁切插件jCrop的使用心得（四）/">图片裁切插件jCrop的使用心得（四）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在本篇中我来介绍一下 jcrop 如何实时展现用户裁切的效果图以及在项目中使用该插件注意的问题。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/02/03/图片裁切插件jCrop的使用心得（四）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/02/03/图片裁切插件jCrop的使用心得（四）/" data-id="ck0l51lpq0014y0vx5pgzexn2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片裁切/">图片裁切</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-图片裁切插件jCrop的使用心得（三）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/图片裁切插件jCrop的使用心得（三）/" class="article-date">
+  <time datetime="2016-02-03T08:13:04.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/03/图片裁切插件jCrop的使用心得（三）/">图片裁切插件jCrop的使用心得（三）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在这一篇里，我来具体讲讲代码该如何写。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/02/03/图片裁切插件jCrop的使用心得（三）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/02/03/图片裁切插件jCrop的使用心得（三）/" data-id="ck0l51lpj000uy0vxuktvnqfn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片裁切/">图片裁切</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-图片裁切插件jCrop的使用心得（二）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/图片裁切插件jCrop的使用心得（二）/" class="article-date">
+  <time datetime="2016-02-03T07:55:18.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/03/图片裁切插件jCrop的使用心得（二）/">图片裁切插件jCrop的使用心得（二）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>上一篇简单的介绍了一下开发的背景以及一些学习资料，下面开始介绍如何上手。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/02/03/图片裁切插件jCrop的使用心得（二）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/02/03/图片裁切插件jCrop的使用心得（二）/" data-id="ck0l51lpo0011y0vx2jat3x5x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片裁切/">图片裁切</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-图片裁切插件jCrop的使用心得（一）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/图片裁切插件jCrop的使用心得（一）/" class="article-date">
+  <time datetime="2016-02-03T07:36:24.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/03/图片裁切插件jCrop的使用心得（一）/">图片裁切插件jCrop的使用心得（一）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前，项目经理为了提升用户体验让我在之前图片上传功能的基础上实现图片的裁切功能，作为一个前端小白来说听了这个需求心里一紧，毕竟没有做过，于是跟项目经理商量要先做下调研。在一上午的调研中发现了 jCrop 这个插件出现的概率最高而且也比较符合项目的要求并且网上的教程也很多，于是果断开始了对这个插件的实践。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/02/03/图片裁切插件jCrop的使用心得（一）/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/02/03/图片裁切插件jCrop的使用心得（一）/" data-id="ck0l51lpl000yy0vxv6jpjmud" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片裁切/">图片裁切</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/桌面端/">桌面端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ant-design/">ant-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/immutablejs/">immutablejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片裁切/">图片裁切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信企业号/">微信企业号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ant-design/" style="font-size: 10px;">ant-design</a> <a href="/tags/css/" style="font-size: 12.5px;">css</a> <a href="/tags/electron/" style="font-size: 17.5px;">electron</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/immutablejs/" style="font-size: 15px;">immutablejs</a> <a href="/tags/mobx/" style="font-size: 17.5px;">mobx</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/redux/" style="font-size: 15px;">redux</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/图片裁切/" style="font-size: 17.5px;">图片裁切</a> <a href="/tags/微信企业号/" style="font-size: 10px;">微信企业号</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a> <a href="/tags/邮件/" style="font-size: 10px;">邮件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

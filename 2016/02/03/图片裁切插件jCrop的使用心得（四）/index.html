@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>图片裁切插件jCrop的使用心得（四） | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在本篇中我来介绍一下 jcrop 如何实时展现用户裁切的效果图以及在项目中使用该插件注意的问题。">
+<meta name="keywords" content="图片裁切">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图片裁切插件jCrop的使用心得（四）">
+<meta property="og:url" content="https://kwzm.netlify.com/2016/02/03/图片裁切插件jCrop的使用心得（四）/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="在本篇中我来介绍一下 jcrop 如何实时展现用户裁切的效果图以及在项目中使用该插件注意的问题。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-15T15:21:11.251Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图片裁切插件jCrop的使用心得（四）">
+<meta name="twitter:description" content="在本篇中我来介绍一下 jcrop 如何实时展现用户裁切的效果图以及在项目中使用该插件注意的问题。">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kwzm.netlify.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-图片裁切插件jCrop的使用心得（四）" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/03/图片裁切插件jCrop的使用心得（四）/" class="article-date">
+  <time datetime="2016-02-03T08:37:34.000Z" itemprop="datePublished">2016-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      图片裁切插件jCrop的使用心得（四）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在本篇中我来介绍一下 jcrop 如何实时展现用户裁切的效果图以及在项目中使用该插件注意的问题。</p>
+<a id="more"></a>
+
+<p>首先，你们在创建头像时，都可以在旁边实时的看到我裁切后的效果图，就如博客园。</p>
+<p>这个是如何实现的呢，其实并不难。</p>
+<p>还记得我们在 Jcrop 插件初始化的时候配置了一个这个参数吗。</p>
+<p>这个参数就是当裁切框不断变化的时候执行的方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//简单的事件处理程序，响应自onChange,onSelect事件，按照上面的Jcrop调用</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showPreview</span>(<span class="params">coords</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">parseInt</span>(coords.w) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">//计算预览区域图片缩放的比例，通过计算显示区域的宽度(与高度)与剪裁的宽度(与高度)之比得到</span></span><br><span class="line">    <span class="keyword">var</span> rx = $previewBox.width() / coords.w;</span><br><span class="line">    <span class="keyword">var</span> ry = $previewBox.height() / coords.h;</span><br><span class="line">    <span class="comment">//通过比例值控制图片的样式与显示</span></span><br><span class="line">    $(<span class="string">"#crop_preview"</span>).css(&#123;</span><br><span class="line">      width: <span class="built_in">Math</span>.round(rx * $originalImg.width()) + <span class="string">"px"</span>, <span class="comment">//预览图片宽度为计算比例值与原图片宽度的乘积</span></span><br><span class="line">      height: <span class="built_in">Math</span>.round(rx * $originalImg.height()) + <span class="string">"px"</span>, <span class="comment">//预览图片高度为计算比例值与原图片高度的乘积</span></span><br><span class="line">      marginLeft: <span class="string">"-"</span> + <span class="built_in">Math</span>.round(rx * coords.x) + <span class="string">"px"</span>,</span><br><span class="line">      marginTop: <span class="string">"-"</span> + <span class="built_in">Math</span>.round(ry * coords.y) + <span class="string">"px"</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要实现该效果还需要对应的 html 结构，很简单。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"preview_box"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"crop_preview"</span> <span class="attr">src</span>=<span class="string">""</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里面的图片路径就是用户上传后的图片路径，我们通过对这个预览图片来做一些 css 样式的变化来实现预览效果。<br>要注意的一些问题：</p>
+<p>1、在用户觉得图片不好删除掉他上传的图片后，同时也要将 jcrop 插件销毁掉。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (jcropObj) &#123;</span><br><span class="line">  jcropObj.destroy();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、要考虑用户上传图片如果超过了外面的展示窗口怎么办。</p>
+<p>这里可以自己去看下博客园的做法，其实它是把图片在后台进行了缩放。让图片能够不超出这个展示框。</p>
+<p>那么到此我想介绍的一些关于 jCrop 插件我使用的心得就已经分享完了，咱们下篇再见。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/02/03/图片裁切插件jCrop的使用心得（四）/" data-id="ck0l51lpq0014y0vx5pgzexn2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图片裁切/">图片裁切</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/25/怎样用sourceTree将自己本地的项目上传到github网站上/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          怎样用sourceTree将自己本地的项目上传到github网站上
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/02/03/图片裁切插件jCrop的使用心得（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">图片裁切插件jCrop的使用心得（三）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/桌面端/">桌面端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ant-design/">ant-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/immutablejs/">immutablejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片裁切/">图片裁切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信企业号/">微信企业号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ant-design/" style="font-size: 10px;">ant-design</a> <a href="/tags/css/" style="font-size: 12.5px;">css</a> <a href="/tags/electron/" style="font-size: 17.5px;">electron</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/immutablejs/" style="font-size: 15px;">immutablejs</a> <a href="/tags/mobx/" style="font-size: 17.5px;">mobx</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/redux/" style="font-size: 15px;">redux</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/图片裁切/" style="font-size: 17.5px;">图片裁切</a> <a href="/tags/微信企业号/" style="font-size: 10px;">微信企业号</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a> <a href="/tags/邮件/" style="font-size: 10px;">邮件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

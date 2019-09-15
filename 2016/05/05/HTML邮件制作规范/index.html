@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>HTML邮件制作规范 | Kwzm&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="以下内容有些是别人总结的，有些是自己在工作中总结的。">
+<meta name="keywords" content="邮件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTML邮件制作规范">
+<meta property="og:url" content="https://kwzm.netlify.com/2016/05/05/HTML邮件制作规范/index.html">
+<meta property="og:site_name" content="Kwzm&#39;s blog">
+<meta property="og:description" content="以下内容有些是别人总结的，有些是自己在工作中总结的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-15T15:25:19.334Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTML邮件制作规范">
+<meta name="twitter:description" content="以下内容有些是别人总结的，有些是自己在工作中总结的。">
+  
+    <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kwzm&#39;s blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Stay hungry stay foolish</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kwzm.netlify.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-HTML邮件制作规范" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/05/HTML邮件制作规范/" class="article-date">
+  <time datetime="2016-05-05T02:47:29.000Z" itemprop="datePublished">2016-05-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术/">技术</a>►<a class="article-category-link" href="/categories/技术/前端/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HTML邮件制作规范
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以下内容有些是别人总结的，有些是自己在工作中总结的。</p>
+<a id="more"></a>
+
+<p>模板最佳尺寸：显示宽度 550px-750px，模板高度控制在一屏以内。</p>
+<p>1、 用 table+css 方式构建模板</p>
+<p>Div+css 布局不完全被邮件客户端支持，所以无法使用 div+css 布局。</p>
+<p>2、 可以使用 editplues，或者 UltraEdit 等工具制作 html，但务必使用可视化工具检查嵌套情况推荐 Dreamweaver</p>
+<p>3、 插入的图片要定义宽度，高度，针对（editplues，UltraEdit 等工具更要注意这一点）</p>
+<p>4、 严禁使用背景图片</p>
+<p>在 outlook2007 中，背景图片将无法显示，其他邮件客户端可正确显示背景图片。</p>
+<p>Gmail 也不支持 css 里面的背景图，</p>
+<p>5、 严禁使用 map 标记形式</p>
+<p>造成后期可视化统计困难</p>
+<p>6、 不使用 word 转换的 html 文件作为模板</p>
+<p>7、 不要用外部链接的 css 文件</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span></span></span><br><span class="line"><span class="tag">  <span class="attr">rel</span>=<span class="string">"stylesheet"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">rev</span>=<span class="string">"stylesheet"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">type</span>=<span class="string">"text/css"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">href</span>=<span class="string">"/css/new/common.css"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">media</span>=<span class="string">"all"</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样是抓取不到 css 的，要写在 html，head 里面<br>8、网站或者论坛客户自己有服务器的涉及上传模板文件的按照这个格式</p>
+<p><a href="http://www.abc.com/file/0902_tr/edm.html" target="_blank" rel="noopener">http://www.abc.com/file/0902_tr/edm.html</a></p>
+<p><a href="http://www.abc.com/file/0902_tr/edm_online.html" target="_blank" rel="noopener">http://www.abc.com/file/0902_tr/edm_online.html</a></p>
+<p>这样的格式系统无法抓取</p>
+<p><a href="http://www.abc.com/file/0902_tr/" target="_blank" rel="noopener">http://www.abc.com/file/0902_tr/</a></p>
+<p>9、模板中的图片请使用绝对路径,完整的 URl</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.abc/123.jpg"</span> <span class="attr">width</span>=<span class="string">"140"</span> <span class="attr">height</span>=<span class="string">"123"</span> <span class="attr">border</span>=<span class="string">"0"</span> &gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.abc/456.jpg"</span> <span class="attr">width</span>=<span class="string">"140"</span> <span class="attr">height</span>=<span class="string">"123"</span> <span class="attr">border</span>=<span class="string">"0"</span> &gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>10、一个 td 里面不要放多个图片，请放在不同 td 里面，</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">width</span>=<span class="string">"136"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">cellspacing</span>=<span class="string">"0"</span> <span class="attr">cellpadding</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.abc/123.jpg"</span> <span class="attr">width</span>=<span class="string">"140"</span> <span class="attr">height</span>=<span class="string">"123"</span> <span class="attr">border</span>=<span class="string">"0"</span> &gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.abc/456.jpg"</span> <span class="attr">width</span>=<span class="string">"140"</span> <span class="attr">height</span>=<span class="string">"123"</span> <span class="attr">border</span>=<span class="string">"0"</span> &gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>11、<code>&lt;img src=&quot;http://444/edm1_03.jpg&quot; width=&quot;570&quot; height=&quot;52&quot; border=&quot;0&quot; /&gt;</code></p>
+<p>12、不规范的换行会让图片丢失</p>
+<p>=========================以下是我自己总结的===========================</p>
+<p>1、 在 outlook 里面很多 css 属性不支持（比如：margin，overflow，text-overflow 等）</p>
+<p>这是查看各种邮箱属性支持情况的网站</p>
+<p><a href="https://www.campaignmonitor.com/css/" target="_blank" rel="noopener">https://www.campaignmonitor.com/css/</a></p>
+<p>2、在 outlook 上不能用背景图片，不能用网络图片加载。</p>
+<p>3、在 outlook 上图片设置的宽高是不管用的</p>
+<p>4、在 outlook 上实现 dom 结构居中要用 align=center</p>
+<p>5、outlook 会自动加大行距间距</p>
+<p>6、页面元素之间有间距可能是 html 里面混入了$nbsp;(也就是空格字符)</p>
+<p>7、align=center 在不同的浏览器的不同的邮箱解读代码是不一样的，纠错能力也不一样，</p>
+<p>8、 邮件里文字的居中就用 text-align，dom 的居中就用 align=center</p>
+<p>9、Foxmail 里面要想实现超出的文本不折行，超出部分显示省略号，建议不要直接把文本放到 td 下面，而是在 td 下面创建 a 标签，把内容放到 a 标签下，然后相应样式写在 a 标签里。</p>
+<p>10、Foxmail 不支持 https 的图片路径</p>
+<p>11、有些邮箱上页面结构显示不正确的问题如果和以上内容无关的话建议采用别的 dom 结构来试试。</p>
+<p>12、outlook 邮箱中，多个连续的” ”或&amp;nbsp;符号不受宽度样式的限制，会一直往后延伸。</p>
+<p>目前前端没有找到解决办法。</p>
+<p>PS:</p>
+<p>在浏览器里面浏览正常的模板，不一定正常！！！，要用发送系统抓取模板新建任务，发送到邮箱用浏览或者用客户端查看，邮件客户端软件和邮箱服务商的 html 解析水平基本停留在 table 布局阶段，而且出于安全考虑也有很多禁忌，请使用 table+css 布局，用 Dreamweaver 修改模板后还要查看 html 代码部分，空连接，怪异的或者过多的 alt,title 值（建议不超过 30 个汉字），没有宽高的图片都会造成邮件显示错误.</p>
+<p>建议的测试环境，操作系统 xp，win7，邮件客户端 outlook2007，outlookexpre，foxmail6.0 以上</p>
+<p>Ie 下的 qq 邮箱，126 邮箱，hotmail 邮箱，搜狐邮箱，新浪邮箱等等</p>
+<p>有精力的话可以再在火狐下面再用以上邮箱测试测试</p>
+<p>很多人用 outlook2007，所以要着重测试.</p>
+<p>参考资料</p>
+<p>1、<a href="http://blog.csdn.net/sykent/article/details/8584637" target="_blank" rel="noopener">http://blog.csdn.net/sykent/article/details/8584637</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kwzm.netlify.com/2016/05/05/HTML邮件制作规范/" data-id="ck0l51loa0000y0vx06b3qfis" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/12/探究为何rem在chrome浏览器上计算出错/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          探究为何rem在chrome浏览器上计算出错
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/25/怎样用sourceTree将自己本地的项目上传到github网站上/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">怎样用sourceTree将自己本地的项目上传到github网站上</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/桌面端/">桌面端</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ant-design/">ant-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/immutablejs/">immutablejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片裁切/">图片裁切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信企业号/">微信企业号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ant-design/" style="font-size: 10px;">ant-design</a> <a href="/tags/css/" style="font-size: 12.5px;">css</a> <a href="/tags/electron/" style="font-size: 17.5px;">electron</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/immutablejs/" style="font-size: 15px;">immutablejs</a> <a href="/tags/mobx/" style="font-size: 17.5px;">mobx</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/redux/" style="font-size: 15px;">redux</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/图片裁切/" style="font-size: 17.5px;">图片裁切</a> <a href="/tags/微信企业号/" style="font-size: 10px;">微信企业号</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a> <a href="/tags/邮件/" style="font-size: 10px;">邮件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/08/19/记录前端单元测试和e2e测试踩过的坑【持续更新】/">记录前端单元测试和e2e测试踩过的坑【持续更新】</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/13/React-SPA-应用-hash-路由如何使用锚点/">React SPA 应用 hash 路由如何使用锚点</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/04/dva系列源码解读/">dva系列源码解读</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/01/react-mobx实现兼容IE9的CMS系统过程中的经验总结/">react+mobx实现兼容IE9的CMS系统过程中的经验总结</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/26/redux-saga-源码解析/">redux-saga 源码解析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Kwzm<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

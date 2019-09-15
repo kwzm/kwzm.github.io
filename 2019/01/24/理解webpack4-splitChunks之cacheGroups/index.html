@@ -11,18 +11,18 @@
 <meta name="keywords" content="webpack">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解webpack4.splitChunks之cacheGroups">
-<meta property="og:url" content="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks之cacheGroups/index.html">
+<meta property="og:url" content="https://kwzm.netlify.com/2019/01/24/理解webpack4-splitChunks之cacheGroups/index.html">
 <meta property="og:site_name" content="Kwzm&#39;s blog">
 <meta property="og:description" content="cacheGroups 其实是 splitChunks 里面最核心的配置，一开始我还认为 cacheGroups 是可有可无的，这是完全错误的，splitChunks 就是根据 cacheGroups 去拆分模块的，包括之前说的 chunks 属性和之后要介绍的种种属性其实都是对缓存组进行配置的。splitChunks 默认有两个缓存组：vender 和 default，可以再来回顾一下 spli">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/1.png">
-<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/2.png">
-<meta property="og:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/3.png">
+<meta property="og:image" content="https://kwzm.netlify.com/images/splitChunks-cacheGroups/1.png">
+<meta property="og:image" content="https://kwzm.netlify.com/images/splitChunks-cacheGroups/2.png">
+<meta property="og:image" content="https://kwzm.netlify.com/images/splitChunks-cacheGroups/3.png">
 <meta property="og:updated_time" content="2019-09-15T10:26:51.618Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解webpack4.splitChunks之cacheGroups">
 <meta name="twitter:description" content="cacheGroups 其实是 splitChunks 里面最核心的配置，一开始我还认为 cacheGroups 是可有可无的，这是完全错误的，splitChunks 就是根据 cacheGroups 去拆分模块的，包括之前说的 chunks 属性和之后要介绍的种种属性其实都是对缓存组进行配置的。splitChunks 默认有两个缓存组：vender 和 default，可以再来回顾一下 spli">
-<meta name="twitter:image" content="http://blog.kwzm.net/images/splitChunks-cacheGroups/1.png">
+<meta name="twitter:image" content="https://kwzm.netlify.com/images/splitChunks-cacheGroups/1.png">
   
     <link rel="alternate" href="/atom.xml" title="Kwzm&#39;s blog" type="application/atom+xml">
   
@@ -67,7 +67,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.kwzm.net"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kwzm.netlify.com"></form>
       </div>
     </div>
   </div>
@@ -110,10 +110,10 @@
 <img src="/images/splitChunks-cacheGroups/1.png">
 
 <p>entry1.js</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry1&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;App /&gt;, document.getElementById("root"));</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry1&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span>, document.getElementById("root"));</span></span><br></pre></td></tr></table></figure>
 
 <p>entry2.js</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry2&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;App /&gt;, document.getElementById("root"));</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span>;</span><br><span class="line"><span class="keyword">import</span> $ <span class="keyword">from</span> <span class="string">"./assets/jquery"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;div&gt;entry2&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span>, document.getElementById("root"));</span></span><br></pre></td></tr></table></figure>
 
 <p>打包之后的结果如下：</p>
 <img src="/images/splitChunks-cacheGroups/2.png" width="300" height="200">
@@ -128,7 +128,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://blog.kwzm.net/2019/01/24/理解webpack4-splitChunks之cacheGroups/" data-id="ck0kuuryq000f3ovxz4oy9fkt" class="article-share-link">Share</a>
+      <a data-url="https://kwzm.netlify.com/2019/01/24/理解webpack4-splitChunks之cacheGroups/" data-id="ck0l51lq7001qy0vxs72ugjf4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li></ul>
@@ -167,7 +167,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/前端/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术/桌面端/">桌面端</a></li></ul></li></ul>
     </div>
   </div>
 
@@ -177,7 +177,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ant-design/">ant-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/electron/">electron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/immutablejs/">immutablejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobx/">mobx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">nodejs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redux/">redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/">webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/前端测试/">前端测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图片裁切/">图片裁切</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信企业号/">微信企业号</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/邮件/">邮件</a></li></ul>
     </div>
   </div>
 
@@ -187,7 +187,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/mobx/" style="font-size: 10px;">mobx</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a>
+      <a href="/tags/ant-design/" style="font-size: 10px;">ant-design</a> <a href="/tags/css/" style="font-size: 12.5px;">css</a> <a href="/tags/electron/" style="font-size: 17.5px;">electron</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/gulp/" style="font-size: 10px;">gulp</a> <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/immutablejs/" style="font-size: 15px;">immutablejs</a> <a href="/tags/mobx/" style="font-size: 17.5px;">mobx</a> <a href="/tags/nodejs/" style="font-size: 17.5px;">nodejs</a> <a href="/tags/redux/" style="font-size: 15px;">redux</a> <a href="/tags/webpack/" style="font-size: 20px;">webpack</a> <a href="/tags/前端测试/" style="font-size: 10px;">前端测试</a> <a href="/tags/图片裁切/" style="font-size: 17.5px;">图片裁切</a> <a href="/tags/微信企业号/" style="font-size: 10px;">微信企业号</a> <a href="/tags/源码解读/" style="font-size: 15px;">源码解读</a> <a href="/tags/邮件/" style="font-size: 10px;">邮件</a>
     </div>
   </div>
 
@@ -196,7 +196,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
     </div>
   </div>
 
